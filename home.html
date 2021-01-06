@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Quotes App</title>
+
+</head>
+<body>
+    <div class="container-fluid  justify-content-center p-0 m-auto bg-dark row align-item-center" style="height: 100vh; width: 100%;">
+        
+        <div class="col-md-5 shadow-lg align-item-center rounded m-auto bg-secondary p-5">
+               <div class="card text-center ">
+                   <div class="card-body text-left">
+                        <i class="fa fa-quote-left fa-3x text-left my-4 text-secondary"></i>
+                        <h3 class="text-center" id="quote"></h3>
+                   </div>
+                   <div class="card-footer">
+                       <p class="blockquote-footer" id="author"></p>
+                   </div>
+                   <div class="card-footer p-0 ">
+                    <button class="btn btn-primary btn-block" id="btn">New Quote</button>
+                    <button class="btn btn-primary btn-block" id="btnTweet">Tweet</button>
+                </div>
+               </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+    <script>
+
+        const quote = document.getElementById("quote");
+        const author = document.getElementById("author");
+        let nextbtn = document.getElementById("btn");
+        let tweetbtn = document.getElementById("btnTweet");
+        let quotesData = "";
+
+      
+        const changeData = (data)=>{
+
+            let randomnum = Math.floor(Math.random() * 1643);
+            quotesData = data[randomnum].text;
+            quote.innerHTML= `${data[randomnum].text}`;
+            author.innerHTML= `${data[randomnum].author}`;
+
+        }
+
+        
+
+        const tweetPush = ()=>{
+            let tweetLink = `https://twitter.com/intent/tweet?text=${quotesData}`;
+            window.open(tweetLink);
+        }
+
+       
+        
+        const getData = async () =>{
+            const api = "https://type.fit/api/quotes";
+            try{
+                const tempdata = await fetch(api);
+                let data = await tempdata.json();
+                changeData(data);
+
+            }catch(error){
+                console.log("Error Occur , Something went wronge Qaism !");
+            }
+        };
+
+        getData();
+
+        nextbtn.addEventListener("click" , getData);
+        tweetbtn.addEventListener("click" , tweetPush);
+
+
+    </script>
+</body>
+</html>
